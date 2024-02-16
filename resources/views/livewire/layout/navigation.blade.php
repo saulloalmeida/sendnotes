@@ -36,6 +36,10 @@ new class extends Component
                     <x-nav-link :href="route('notes.index')" :active="request()->routeIs('notes.index')" wire:navigate>
                         {{ __('Notes') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('notes.create')" :active="request()->routeIs('notes.create')" wire:navigate>
+                        {{ __('Create Note') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -52,6 +56,7 @@ new class extends Component
                                 </svg>
                             </div>
                         </button>
+                        
                     </x-slot>
 
                     <x-slot name="content">
@@ -90,6 +95,10 @@ new class extends Component
             <x-responsive-nav-link :href="route('notes.index')" :active="request()->routeIs('notes.index')" wire:navigate>
                 {{ __('Notes') }}
             </x-responsive-nav-link>
+
+            <x-nav-link :href="route('notes.create')" :active="request()->routeIs('notes.create')" wire:navigate>
+                        {{ __('Create Note') }}
+                    </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

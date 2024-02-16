@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public $noteTitle;
     public $noteBody;
     public $noteRecipient;
@@ -11,32 +13,38 @@ new class extends Component {
     public function validationAttributes()
     {
         return [
-            'noteTitle' => 'Titulo',
-            'noteBody' => 'Mensagem',
+            'noteTitle'     => 'Titulo',
+            'noteBody'      => 'Mensagem',
             'noteRecipient' => 'Destinatário',
-            'noteSendDate' => 'Data de Envio',
+            'noteSendDate'  => 'Data de Envio',
         ];
     }
-    
+
+    public function rules()
+    {
+        return [
+            'noteTitle'     => ['required', 'string', 'min:5'],
+            'noteBody'      => ['required', 'string', 'min:20'],
+            'noteRecipient' => ['required', 'email'],
+            'noteSendDate'  => ['required', 'date'],
+        ];
+    }
+
     public function submit()
     {
-        $validated = $this->validate([
-            'noteTitle' => ['required', 'string', 'min:5'],
-            'noteBody' => ['required', 'string', 'min:20'],
-            'noteRecipient' => ['required', 'email'],
-            'noteSendDate' => ['required', 'date'],
-    ]);
-        auth()->user()->notes()->create([
-            'title' => $this->noteTitle,
-            'body' => $this->noteBody,
-            'send_date' => $this->noteSendDate,
-            'recipient' => $this->noteRecipient,
+        $this->validate();
+        Auth::user()->notes()->create([
+            'title'        => $this->noteTitle,
+            'body'         => $this->noteBody,
+            'send_date'    => $this->noteSendDate,
+            'recipient'    => $this->noteRecipient,
             'is_published' => false,
-    ]);
+        ]);
+        
         redirect(route('notes.index'));
-        dd($this->noteTitle, $this->noteBody, $this->noteRecipient, $this->noteSendDate);
     }
-}; ?>
+};
+?>
 
 <div>
     <form wire:submit='submit' class="space-y-4">

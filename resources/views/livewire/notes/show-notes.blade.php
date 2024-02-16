@@ -1,12 +1,15 @@
 <?php
 
-use Carbon\Carbon;
-use Livewire\Volt\Component;
-use Illuminate\Support\Facades\Auth;
+declare(strict_types=1);
 
-new class extends Component {
-    public $title = '';
-    public $body = '';
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Volt\Component;
+
+new class extends Component
+{
+    public $title     = '';
+    public $body      = '';
     public $send_date = '01/30/2024';
 
     public function save()
@@ -14,21 +17,30 @@ new class extends Component {
         Auth::user()
             ->notes()
             ->create([
-                'title' => $this->title,
-                'body' => $this->body,
+                'title'     => $this->title,
+                'body'      => $this->body,
                 'send_date' => $this->send_date,
             ]);
     }
+
     public function with()
     {
         return [
             'notes' => Auth::user()
-                ->notes()
-                ->orderBy('send_date', 'asc')
-                ->get(),
+                           ->notes()
+                           ->orderBy('send_date', 'asc')
+                           ->get(),
         ];
     }
-}; ?>
+
+    public function delete($noteId)
+    {
+        Auth::user()->notes()->find($noteId)->delete();
+
+        redirect(route('dashboard'));
+    }
+};
+?>
 
 <div>
     <div class="space-y-2">
@@ -60,7 +72,7 @@ new class extends Component {
                     </div> --}}
                             <div>
                                 <x-button.circle icon="eye"></x-button.circle>
-                                <x-button.circle icon="trash"></x-button.circle>
+                                <x-button.circle icon="trash" wire:click="delete('{{$note->id}}')"></x-button.circle>
                             </div>
                             <p class="text-xs">title: <span class="font-semibold">{{ $note->title }}</span></p>
                         </div>
