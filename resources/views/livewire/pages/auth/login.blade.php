@@ -6,32 +6,37 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
-    public LoginForm $form;
-
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function login(): void
+new
+    #[Layout('layouts.guest')]
+    class extends Component
     {
-        $this->validate();
+        public LoginForm $form;
 
-        $this->form->authenticate();
+        /**
+         * Handle an incoming authentication request.
+         */
+        public function login(): void
+        {
+            $this->validate();
 
-        Session::regenerate();
+            $this->form->authenticate();
 
-        $this->redirect(
-            session('url.intended', RouteServiceProvider::HOME),
-            navigate: true
-        );
-    }
-}; ?>
+            Session::regenerate();
+
+            $this->redirect(
+                session('url.intended', RouteServiceProvider::HOME),
+                navigate: true
+            );
+        }
+    };
+?>
 
 <div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    @env('local')
+        <x-login-link email="teste@teste.com"/>
+    @endenv
     <form wire:submit="login">
         <!-- Email Address -->
         <div>

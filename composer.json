@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.0",
+        "spatie/laravel-login-link": "^1.1",
         "tallstackui/tallstackui": "^1.13"
     },
     "require-dev": {
